@@ -8,6 +8,7 @@ public class CurrencyResponse
 //Под-класс для ответа с API
 public class Quotes
 {
+    public double RUBKZT { get; set; }
     public double RUBUSD { get; set; }
     public double RUBEUR { get; set; }
     public double RUBGBP { get; set; }
@@ -20,7 +21,7 @@ class Currency
     static async Task Main()
     {
         using var Request = new HttpRequestMessage(
-            HttpMethod.Post,"http://apilayer.net/api/live?access_key=YOURKEYHERE&currencies=USD,EUR,GBP&source=RUB&format=1");
+            HttpMethod.Post,"http://apilayer.net/api/live?access_key=YOURAPIKEYHERE&currencies=USD,EUR,GBP,KZT&source=RUB&format=1");
         using var Response = await httpClient.SendAsync(Request);
         string RespTest = await Response.Content.ReadAsStringAsync();
         
@@ -31,14 +32,17 @@ class Currency
         double rub2usd = response.quotes.RUBUSD;
         double rub2eur = response.quotes.RUBEUR;
         double rub2gbp = response.quotes.RUBGBP;
+        double rub2kzt = response.quotes.RUBKZT;
 
         // Считаем курс 1 иностранной валюты к рублю
         double usd = 1 / rub2usd;
         double eur = 1 / rub2eur;
         double gbp = 1 / rub2gbp;
+        double kzt = 1 / rub2kzt;
         // Вывод курса 1 к рублю
         Console.WriteLine($"USD to RUB: {Math.Round(usd, 2)}");
         Console.WriteLine($"EUR to RUB: {Math.Round(eur, 2)}");
         Console.WriteLine($"GBP to RUB: {Math.Round(gbp, 2)}");
+        Console.WriteLine($"KZT to RUB: {Math.Round(kzt, 2)}");
     }
 }
